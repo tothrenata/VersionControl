@@ -12,6 +12,7 @@ namespace _4.gyakorlat
 {
     public partial class Form1 : Form
     {
+
         public Form1()
         {
             InitializeComponent();
