@@ -21,12 +21,7 @@ namespace _6.gyakorlat
         {
             InitializeComponent();
 
-            ExchangeRates();
-
-            VisualizeData();
-
-            dataGridView1.DataSource = Rates;
-
+            RefreshData();
         }
         public void ExchangeRates()
         {
@@ -34,9 +29,9 @@ namespace _6.gyakorlat
 
             var request = new GetExchangeRatesRequestBody()
             {
-                currencyNames = "EUR",
-                startDate = "2020-01-01",
-                endDate = "2020-06-30"
+                currencyNames = "EUR", //comboBox1.SelectedItem.ToString(),
+                startDate = dateTimePicker1.Value.ToString(),
+                endDate = dateTimePicker2.Value.ToString()
             };
 
             var response = mbService.GetExchangeRates(request);
@@ -77,6 +72,32 @@ namespace _6.gyakorlat
             chartArea.AxisX.MajorGrid.Enabled = false;
             chartArea.AxisY.MajorGrid.Enabled = false;
             chartArea.AxisY.IsStartedFromZero = false;
+        }
+
+        public void RefreshData()
+        {
+            Rates.Clear();
+
+            ExchangeRates();
+
+            VisualizeData();
+
+            dataGridView1.DataSource = Rates;
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RefreshData();
         }
     }
 }
