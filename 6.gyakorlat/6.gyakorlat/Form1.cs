@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,9 +18,34 @@ namespace _6.gyakorlat
     public partial class Form1 : Form
     {
         BindingList<RateData> Rates = new BindingList<RateData>();
+
+        BindingList<string> Currencies = new BindingList<string>();
         public Form1()
         {
             InitializeComponent();
+
+            var mbService = new MNBArfolyamServiceSoapClient();
+            var request = new GetCurrenciesRequestBody()
+            {
+
+            };
+
+            var response = mbService.GetCurrencies(request);
+            var result = response.GetCurrenciesResult;
+
+            var xml = new XmlDocument();
+            xml.LoadXml(result);
+
+            foreach (XmlElement element in xml.DocumentElement)
+            {
+                foreach(XmlElement child in element.ChildNodes)
+                {
+                    string currency = child.InnerText;
+                    Currencies.Add(currency);
+                }
+            }
+
+            comboBox1.DataSource = Currencies;      
 
             RefreshData();
         }
@@ -29,7 +55,7 @@ namespace _6.gyakorlat
 
             var request = new GetExchangeRatesRequestBody()
             {
-                currencyNames = "EUR", //comboBox1.SelectedItem.ToString(),
+                currencyNames = comboBox1.SelectedItem.ToString(),
                 startDate = dateTimePicker1.Value.ToString(),
                 endDate = dateTimePicker2.Value.ToString()
             };
@@ -48,6 +74,10 @@ namespace _6.gyakorlat
                 rate.Date = DateTime.Parse(element.GetAttribute("date"));
 
                 var childElement = (XmlElement)element.ChildNodes[0];
+
+                if (childElement == null)
+                    continue;
+
                 rate.Currency = childElement.GetAttribute("curr");
 
                 var unit = decimal.Parse(childElement.GetAttribute("unit"));
