@@ -17,17 +17,27 @@ namespace _7.gyakorlat
         List<Person> Population = new List<Person>();
         List<BirthProbability> BirthProbabilities = new List<BirthProbability>();
         List<DeathProbability> DeathProbabilities = new List<DeathProbability>();
+        List<int> Fiúk = new List<int>();
+        List<int> Lányok = new List<int>();
 
         Random rng = new Random(1234);
+
+        
         public Form1()
         {
             InitializeComponent();
 
-            Population = GetPopulation(@"C:\Temp\nép.csv");
+            textBox1.Text = @"C:\Temp\nép-teszt.csv";
+
+            Population = GetPopulation(textBox1.Text);
             BirthProbabilities = GetBirthProbability(@"C:\Temp\születés.csv");
             DeathProbabilities = GetDeathProbability(@"C:\Temp\halál.csv");
+        }
 
-            for (int year = 2005; year <= 2024; year++)
+        private void Simulation()
+        {
+            richTextBox1.Clear();
+            for (int year = 2005; year <= numericUpDown1.Value; year++)
             {
                 for (int i = 0; i < Population.Count; i++)
                 {
@@ -41,9 +51,16 @@ namespace _7.gyakorlat
                 int nbrOfFemales = (from x in Population
                                     where x.Gender == Gender.Female && x.IsAlive
                                     select x).Count();
-
-                Console.WriteLine(string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, nbrOfMales, nbrOfFemales));
+                Fiúk.Add(nbrOfMales);
+                Lányok.Add(nbrOfFemales);
+                //Console.WriteLine(string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, nbrOfMales, nbrOfFemales));
+                DisplayResult(year, nbrOfFemales, nbrOfMales);
             }
+        }
+
+        public void DisplayResult(int year, int nbrf, int nbrm)
+        {
+            richTextBox1.Text += "Szimulációs év: " + year.ToString() + "\n\tLányok: " + nbrf.ToString() + "\n\tFiúk: " + nbrm.ToString()+"\n\n";
         }
         public List<Person> GetPopulation(string csvpath)
         {
@@ -132,6 +149,22 @@ namespace _7.gyakorlat
                     újszülött.Gender = (Gender)(rng.Next(1, 3));
                     Population.Add(újszülött);
                 }
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Simulation();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                textBox1.Text = ofd.FileName;
+                Population = GetPopulation(textBox1.Text);
             }
         }
     }
