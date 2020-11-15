@@ -90,5 +90,16 @@ namespace _8.gyakorlat
                 return;
             button.BackColor = colorPicker.Color;
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Factory = new PresentFactory()
+            {
+                RibbonColor = button4.BackColor,
+                BoxColor = button5.BackColor
+            };
+
+
+        }
     }
 }

@@ -105,21 +105,23 @@
             // 
             // button4
             // 
+            this.button4.BackColor = System.Drawing.Color.Pink;
             this.button4.Location = new System.Drawing.Point(266, 102);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(82, 23);
             this.button4.TabIndex = 5;
-            this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button3_Click);
             // 
             // button5
             // 
+            this.button5.BackColor = System.Drawing.Color.Fuchsia;
             this.button5.Location = new System.Drawing.Point(266, 140);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(82, 23);
             this.button5.TabIndex = 6;
-            this.button5.Text = "button5";
-            this.button5.UseVisualStyleBackColor = true;
+            this.button5.UseVisualStyleBackColor = false;
+            this.button5.Click += new System.EventHandler(this.button3_Click);
             // 
             // button6
             // 
@@ -129,6 +131,7 @@
             this.button6.TabIndex = 7;
             this.button6.Text = "PRESENT";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // Form1
             // 
