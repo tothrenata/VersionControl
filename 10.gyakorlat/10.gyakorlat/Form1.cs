@@ -30,8 +30,8 @@ namespace _10.gyakorlat
             ga = gc.ActivateDisplay();
             this.Controls.Add(ga);
 
-            gc.AddPlayer();
-            gc.Start(true);
+            //gc.AddPlayer();
+            //gc.Start(true);
 
             gc.GameOver += Gc_GameOver;
 
@@ -53,7 +53,7 @@ namespace _10.gyakorlat
             var topPerformers = playerList.Take(populationSize / 2).ToList();
 
             var winners = from p in topPerformers
-                          where p.IsWinner
+                          where !p.IsWinner
                           select p;
             if (winners.Count() > 0)
             {
@@ -77,6 +77,15 @@ namespace _10.gyakorlat
                     gc.AddPlayer(b.Mutate());
             }
             gc.Start();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            gc.ResetCurrentLevel();
+            gc.AddPlayer(winnerBrain.Clone());
+            gc.AddPlayer();
+            ga.Focus();
+            gc.Start(true);
         }
     }
 }
